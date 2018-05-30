@@ -31,8 +31,8 @@ public class IdWork {
 	
 	private final int timestampShift = 22;
 	
-	//选取的时间 零点
-	private final long zoroTimestamp = 1227649519603L;
+	//选取的时间 零点 这儿选择 2018-1-1 00:00:00 为起点
+	private final long zoroTimestamp = 1514736000340L;
 	
 	public IdWork(int nodeId) {
 		this.nodeId = nodeId;
@@ -58,4 +58,7 @@ public class IdWork {
 		}
 	}
 	
+	public static void main(String[] args) {
+		System.out.println(new IdWork(2).nextId());
+	}
 }
