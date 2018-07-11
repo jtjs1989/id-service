@@ -2,9 +2,6 @@ package com.cb.idservice.id;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * * 0          41     51          64
  *  +-----------+------+------------+
@@ -13,22 +10,20 @@ import org.slf4j.LoggerFactory;
  * @author chenbo (jtjs1989@163.com)
  * 
  * 前面0-41位为时间戳偏移值， 选择一个基准时间戳  基准时间戳约接近当前时间生成的ID值约小，长度也越短
- * 42-51 位为机器码 生成的方式可以有多种，这儿使用本机IP地址的hashcode对1024去摸得到，一个集群中要保证每台机器的node值不一样，否则可能出新重复ID
+ * 42-51 位为机器码 生成的方式可以有多种，这儿使用本机IP地址的hashcode对1024得到，一个集群中要保证每台机器的node值不一样，否则可能出新重复ID
  * 最后12位递增数字  增长到4095就归零， 如果同一台服务器上同一毫秒生成的ID数量超过 4096则会重复  （个人认为这样的情况实际中不会出现）
  *
  */
 public class IdWork {
 
-	private Logger logger = LoggerFactory.getLogger(IdWork.class);
-	
 	private final int nodeId;
-	
+	//nodeId 向左移位的位数
 	private final int nodeIdShift = 12;
 	
 	private AtomicInteger increment = new AtomicInteger();
 	
 	private final int maxIncrement = (1 << 12) -1;
-	
+	// 时间戳向左移位的位数
 	private final int timestampShift = 22;
 	
 	//选取的时间 零点 这儿选择 2018-1-1 00:00:00 为起点
@@ -56,9 +51,5 @@ public class IdWork {
 				return next;
 			}
 		}
-	}
-	
-	public static void main(String[] args) {
-		System.out.println(new IdWork(2).nextId());
 	}
 }
